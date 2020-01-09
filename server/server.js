@@ -32,6 +32,11 @@ const auth = require("./auth");
 // socket stuff
 const socket = require("./server-socket");
 
+// GraphQL
+const expressGraphQL = require("express-graphql");
+const fs = require("fs");
+const { makeExecutableSchema } = require("graphql-tools");
+
 // Server configuration below
 // TODO change connection URL after setting up your own database
 const mongoConnectionURL =
@@ -71,6 +76,21 @@ app.use(auth.populateCurrentUser);
 
 // connect user-defined routes
 app.use("/api", api);
+
+// connect GraphQL route handler
+const schemaPath = path.resolve(__dirname, "graphql", "Catbook.graphql");
+app.use(
+  "/graphql",
+  expressGraphQL(function() {
+    return {
+      schema: makeExecutableSchema({
+        typeDefs: fs.readFileSync(schemaPath).toString(),
+        resolvers: require("./graphql/resolvers"),
+      }),
+      graphiql: true,
+    };
+  })
+);
 
 // load the compiled react files, which will serve /index.html and /bundle.js
 const reactPath = path.resolve(__dirname, "..", "client", "dist");
