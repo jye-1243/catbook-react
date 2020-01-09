@@ -1,3 +1,25 @@
+type Comment {
+  id: ID
+  content: String
+  creator: User
+}
+
+type Story {
+  id: ID
+  content: String
+  creator: User
+  comments: [Comment]
+}
+
+type User {
+  id: ID
+  name: String
+  googleid: String
+}
+
 type Query {
-  hello: String!
+  comment(id: String): Comment
+  story(id: String): Story
+  user(id: String): User
+  stories: [Story]
 }
