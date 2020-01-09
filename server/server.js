@@ -36,6 +36,10 @@ const socket = require("./server-socket");
 const expressGraphQL = require("express-graphql");
 const fs = require("fs");
 const { makeExecutableSchema } = require("graphql-tools");
+const DataLoader = require("dataloader");
+const Comment = require("./models/comment");
+const Story = require("./models/story");
+const User = require("./models/user");
 
 // Server configuration below
 // TODO change connection URL after setting up your own database
@@ -87,6 +91,13 @@ app.use(
         typeDefs: fs.readFileSync(schemaPath).toString(),
         resolvers: require("./graphql/resolvers"),
       }),
+      rootValue: {
+        CommentLoader: new DataLoader((keys) =>
+          Promise.all(keys.map((key) => Comment.findById(key)))
+        ),
+        StoryLoader: new DataLoader((keys) => Promise.all(keys.map((key) => Story.findById(key)))),
+        UserLoader: new DataLoader((keys) => Promise.all(keys.map((key) => User.findById(key)))),
+      },
       graphiql: true,
     };
   })
