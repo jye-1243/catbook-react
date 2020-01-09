@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
 
+import { createFragmentContainer } from "react-relay";
+
 /**
  * Component to render a single comment
- *
- * Proptypes
- * @param {string} _id of comment
- * @param {string} creator_name
- * @param {string} creator_id
- * @param {string} content of the comment
  */
 class SingleComment extends Component {
   constructor(props) {
@@ -16,15 +12,28 @@ class SingleComment extends Component {
   }
 
   render() {
+    const comment = this.props.comment;
+    const creator = comment.creator;
+    const creatorName = creator && creator.name;
     return (
       <div className="Card-commentBody">
-        <Link to={`/profile/${this.props.creator_id}`} className="u-link u-bold">
-          {this.props.creator_name}
+        <Link to={`/profile/${creator.id}`} className="u-link u-bold">
+          {creatorName}
         </Link>
-        <span>{" | " + this.props.content}</span>
+        <span>{" | " + comment.content}</span>
       </div>
     );
   }
 }
 
-export default SingleComment;
+export default createFragmentContainer(SingleComment, {
+  comment: graphql`
+    fragment SingleComment_comment on Comment {
+      creator {
+        id
+        name
+      }
+      content
+    }
+  `,
+});
