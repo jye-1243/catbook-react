@@ -45,6 +45,18 @@ module.exports = {
     },
   },
   Mutation: {
+    commentCreate(_, args, req) {
+      if (!req.user) {
+        throw new Error("You must be logged in to create a comment.");
+      }
+      const newComment = new Comment({
+        creator_id: req.user._id,
+        creator_name: req.user.name,
+        parent: args.storyId,
+        content: args.content,
+      });
+      return newComment.save();
+    },
     storyCreate(_, args, req) {
       if (!req.user) {
         throw new Error("You must be logged in to create a story.");

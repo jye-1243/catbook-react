@@ -17,7 +17,7 @@ class Card extends Component {
     return (
       <div className="Card-container">
         <SingleStory story={this.props.story} />
-        <CommentsBlock story={this.props.story} />
+        <CommentsBlock story={this.props.story} userId={this.props.userId} />
       </div>
     );
   }

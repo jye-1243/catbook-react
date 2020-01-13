@@ -25,5 +25,6 @@ type Query {
 }
 
 type Mutation {
+  commentCreate(content: String!, storyId: ID!): Comment
   storyCreate(content: String!): Story
 }
