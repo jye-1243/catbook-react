@@ -85,26 +85,6 @@ class NewComment extends Component {
 }
 
 /**
- * New Story is a New Post component for comments
- *
- * Proptypes
- * @param {string} defaultText is the placeholder text
- */
-class NewStory extends Component {
-  addStory = (value) => {
-    const body = { content: value };
-    post("/api/story", body).then((story) => {
-      // display this story on the screen
-      this.props.addNewStory(story);
-    });
-  };
-
-  render() {
-    return <NewPostInput defaultText="New Story" onSubmit={this.addStory} />;
-  }
-}
-
-/**
  * New Message is a New Message component for messages
  *
  * Proptypes
@@ -121,4 +101,4 @@ class NewMessage extends Component {
   }
 }
 
-export { NewComment, NewStory, NewMessage };
+export { NewComment, NewMessage, NewPostInput };

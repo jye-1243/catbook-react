@@ -23,3 +23,7 @@ type Query {
   user(id: String): User
   stories: [Story]
 }
+
+type Mutation {
+  storyCreate(content: String!): Story
+}

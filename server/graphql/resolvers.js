@@ -44,4 +44,17 @@ module.exports = {
       return Story.find({});
     },
   },
+  Mutation: {
+    storyCreate(_, args, req) {
+      if (!req.user) {
+        throw new Error("You must be logged in to create a story.");
+      }
+      const newStory = new Story({
+        creator_id: req.user._id,
+        creator_name: req.user.name,
+        content: args.content,
+      });
+      return newStory.save();
+    },
+  },
 };
